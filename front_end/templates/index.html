@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>Current Users</h2>
+    {% if usernames %}
+        <ul>
+        {% for username in usernames %}
+            <li>{{ username }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No users found.</p>
+    {% endif %}
+    {% if error %}
+        <div style="color: red; margin-bottom: 10px;">{{ error }}</div>
+    {% endif %}
+    <form action="{{ url_for('login') }}" method="post">
+        <label>Name</label>
+        <input type="text" placeholder="name", name="name">
+        <label>Password</label>
+        <input type="text" placeholder="password", name="password">
+        <button type="submit" name="action" value="login">Login</button>
+        <button type="submit" name="action" value="create">Create User</button>
+    </form>
+</body>
+</html>

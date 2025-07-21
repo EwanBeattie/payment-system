@@ -1,0 +1,16 @@
+# Web Framework
+Flask
+flask-cors
+flash
+
+# GraphQL
+graphene
+graphene-sqlalchemy
+Flask-GraphQL
+
+# Database
+SQLAlchemy
+psycopg2-binary
+
+# Development Dependencies (optional)
+python-dotenv

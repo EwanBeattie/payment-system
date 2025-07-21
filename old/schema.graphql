@@ -1,0 +1,22 @@
+
+type Query {
+    allUsers: [User!]!
+}
+
+type Mutation {
+    createPerson(username: String!, password: String!): User!
+}
+
+type User{
+    id: Int!
+    username: String!
+    password: String!
+    balance: Float!
+}
+
+type Transaction {
+    payer: User!
+    recipient: User!
+    amount: Float!
+    date: Int!
+}

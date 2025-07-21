@@ -1,0 +1,33 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/wallet.css">
+</head>
+<body>
+    <div class="wallet-container">
+        <h2>Wallet</h2>
+        <p>Balance: <span id="balance">0.00</span></p>
+        <h3>Current Users</h3>
+        {% if usernames %}
+            <ul>
+            {% for username in usernames %}
+                <li>{{ username }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No users found.</p>
+        {% endif %}
+        <h3>Transactions</h3>
+        <ul id="transactions"></ul>
+        <h3>Make a Payment</h3>
+        <input type="text" id="recipient" placeholder="Recipient Username">
+        <input type="number" id="amount" placeholder="Amount">
+        <button onclick="makePayment()">Pay</button>
+    </div>
+    <script src="scripts/wallet.js"></script>
+    <script src="scripts/payment.js"></script>
+</body>
+</html>

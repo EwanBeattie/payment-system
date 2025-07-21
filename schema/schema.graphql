@@ -1,0 +1,34 @@
+# This file is the GraphQL version of the schema defined in schema.py
+# It is only for reference and not used in the application since I use graphene
+
+type User {
+    id: ID!
+    username: String!
+    password: String!
+    balance: Float!
+    paymentsMade: [Transaction!]
+    paymentsReceived: [Transaction!]
+}
+
+type Transaction {
+    id: ID!
+    amount: Float!
+    dateTime: String!
+    payerUsername: String!
+    recipientUsername: String!
+    payerId: Int!
+    recipientId: Int!
+    payer: User!
+    recipient: User!
+}
+
+type Query {
+    getUser(username: String!): User
+}
+
+type Mutation {
+    addUser(username: String!, password: String!): User
+    deleteUser(username: String!): Boolean
+    requestTransaction(amount: Float!, payerUsername: String!, recipientUsername: String!): Transaction
+    attemptLogin(username: String!, password: String!): Boolean
+}
