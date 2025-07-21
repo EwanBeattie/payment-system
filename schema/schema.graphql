@@ -24,6 +24,7 @@ type Transaction {
 
 type Query {
     getUser(username: String!): User
+    getUsers: [User!]
 }
 
 type Mutation {
