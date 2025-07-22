@@ -68,7 +68,7 @@ def get_user(username):
       getUser(username: "{username}") {{
         id
         username
-        password
+        balance
       }}
     }}
     '''
@@ -80,8 +80,32 @@ def get_user(username):
         data = result.data['getUser']
         return data
 
+def get_transactions(username):
+    get_transactions = f'''
+    query {{
+      getUser(username: "{username}") {{
+        paymentsMade {{
+          id
+          amount
+          dateTime
+          payerUsername
+          recipientUsername
+        }}
+        paymentsReceived {{
+          id
+          amount
+          dateTime
+          payerUsername
+          recipientUsername
+        }}
+      }}
+    }}
+    '''
+    result = schema.schema.execute(get_transactions)
+    return result
+
 def request_transaction(amount, payer_username, recipient_username):
-    request_transaction_mutation = f'''
+    request_transaction = f'''
     mutation {{
       requestTransaction(amount: {amount} payerUsername: "{payer_username}" recipientUsername: "{recipient_username}") {{
         transaction {{
@@ -95,6 +119,12 @@ def request_transaction(amount, payer_username, recipient_username):
       }}
     }}
     '''
-    
-    result = schema.schema.execute(request_transaction_mutation)
+    # result = schema.schema.execute(request_transaction)
+    # if result.errors:
+    #     print(f"Errors: {result.errors}")
+    #     return result
+    # else:
+    #     data = result.data['requestTransaction']
+    #     return data
+    result = schema.schema.execute(request_transaction)
     return result

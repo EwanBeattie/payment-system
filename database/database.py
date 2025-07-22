@@ -1,29 +1,8 @@
 # Accesses and alters the database. This should be the only class that does this.
 # This class should only be called from schema.py
-from sqlalchemy import create_engine
-from contextlib import contextmanager
-from sqlalchemy.orm import sessionmaker
 from database.models import User, Transaction, Base, engine
-# from schema.schema import engine
 
-# DATABASE_URL = "postgresql://postgres:rootpassword@localhost:5432/postgres"
 DEFAULT_STARTING_BALANCE = 1000.0
-#
-# engine = create_engine(DATABASE_URL)
-
-# SessionLocal = sessionmaker(bind=engine)
-#
-# @contextmanager
-# def get_session():
-#     session = SessionLocal()
-#     try:
-#         yield session
-#         session.commit()
-#     except Exception as exception:
-#         session.rollback()
-#         raise exception
-#     finally:
-#         session.close()
 
 # Tables
 def initialise_tables():

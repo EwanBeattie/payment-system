@@ -8,24 +8,38 @@
 </head>
 <body>
     <div class="wallet-container">
-        <h2>Wallet</h2>
-        <p>Balance: <span id="balance">0.00</span></p>
+        <h2>{{ username }}:Wallet</h2>
+        <p>Balance: <span id="balance">{{ balance }}</span></p>
         <h3>Current Users</h3>
         {% if usernames %}
-            <ul>
+        <ul>
             {% for username in usernames %}
-                <li>{{ username }}</li>
+            <li>{{ username }}</li>
             {% endfor %}
-            </ul>
+        </ul>
         {% else %}
-            <p>No users found.</p>
+        <p>No users found.</p>
         {% endif %}
         <h3>Transactions</h3>
-        <ul id="transactions"></ul>
+        <ul>
+            {% for transaction in transactions %}
+                <li>
+                    {{ transaction.dateTime }}: Paid ${{ transaction.amount }} to {{ transaction.recipientUsername }}
+                </li>
+            {% endfor %}
+        </ul>
         <h3>Make a Payment</h3>
-        <input type="text" id="recipient" placeholder="Recipient Username">
-        <input type="number" id="amount" placeholder="Amount">
-        <button onclick="makePayment()">Pay</button>
+        <form action="{{ url_for('make_payment') }}" method="post">
+            <input type="hidden" name="username" value="{{ username }}">
+            <label>Recipient Username</label>
+            <input type="text" name="recipient" placeholder="Recipient Username" required>
+            <label>Amount</label>
+            <input type="number" name="amount" placeholder="Amount" step="10" required>
+            <button type="submit">Pay</button>
+        </form>
+        {% if error %}
+            <div style="color: red; margin-bottom: 10px;">{{ error }}</div>
+        {% endif %}
     </div>
     <script src="scripts/wallet.js"></script>
     <script src="scripts/payment.js"></script>

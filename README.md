@@ -16,7 +16,7 @@ This project is to get hand-on experience with the following tools:
 - Run app.py
 
 ## GraphQL Schema
-See 'schema.graphql'
+See ```schema/schema.graphql```
 
 ## ToDo
 - Error handling: I need to make the frontend_translator correcly handle all errors that come from the GraphQL API. Maybe I should have an error page that it loads.
