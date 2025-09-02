@@ -40,7 +40,7 @@ def login():
         # To get all the data
         # dictio = request.form.to_dict()
     elif request.method == 'GET':
-        return render_template("index.html")
+        return render_template("index1.html")
 
 @app.route('/user/<username>')
 def user_page(username):
@@ -69,7 +69,7 @@ def make_payment():
 def render_homepage(error=None):
     users = frontend_translator.get_users()
     usernames = [user['username'] for user in users]
-    return render_template("index.html", usernames=usernames, error=error)
+    return render_template("index1.html", usernames=usernames, error=error)
 
 def render_wallet(username, error=None):
     ## For display purposes
@@ -81,10 +81,11 @@ def render_wallet(username, error=None):
     transactions = frontend_translator.get_transactions(username)
     if transactions is not None:
         payments_made = transactions.data['getUser']['paymentsMade']
+        reverse_order_payments = list(reversed(payments_made))
     balance = user['balance']
-    return render_template('wallet.html', 
+    return render_template('wallet1.html', 
                            username=username, 
-                           transactions=payments_made,
+                           transactions=reverse_order_payments,
                            usernames=usernames, 
                            balance=balance, 
                            error=error)
