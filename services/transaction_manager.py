@@ -13,7 +13,7 @@ def request_transaction(amount, payer_username, recipient_username, session):
         raise GraphQLError('Could not find recipient in database')
 
     # Raise transaction request
-    dateTime = datetime.time()
+    dateTime = datetime.datetime.now().strftime('%d/%m/%y %H:%M')
     new_transaction = database.create_transaction(amount, dateTime, payer, recipient, session)
 
     # Check payer has enough money in account

@@ -129,7 +129,7 @@
 <body>
     <div class="wallet-container">
         <h2><i class="fa-solid fa-wallet"></i> {{ username }}'s Wallet</h2>
-        <p style="text-align:center;">Balance: <span id="balance">{{ balance }}</span></p>
+        <p style="text-align:center;">Balance: <span id="balance">£{{ balance }}</span></p>
         <h3><i class="fa-solid fa-paper-plane"></i> Make a Payment</h3>
         <form action="{{ url_for('make_payment') }}" method="post">
             <input type="hidden" name="username" value="{{ username }}">
@@ -160,8 +160,12 @@
         <h3><i class="fa-solid fa-money-bill-transfer"></i> Transactions</h3>
         <ul>
             {% for transaction in transactions %}
-                <li>
-                    <i class="fa-solid fa-arrow-right-arrow-left"></i> {{ transaction.dateTime }}: Paid ${{ transaction.amount }} to {{ transaction.recipientUsername }}
+                <li style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>
+                        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                        {{ transaction.dateTime }}: {{ transaction.recipientUsername }}
+                    </span>
+                    <span style="font-weight:700; color:#059669; min-width:60px; text-align:right;">£{{ transaction.amount }}</span>
                 </li>
             {% endfor %}
         </ul>

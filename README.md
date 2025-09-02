@@ -10,10 +10,10 @@ This project is to get hand-on experience with the following tools:
 ![Showing the project's overall architecture](architecture.png)
 ## Features
 
-## Installation
+<!-- ## Installation
 - Clone the git repo
 - Run 'pip install -r requirements'
-- Run app.py
+- Run app.py -->
 
 ## GraphQL Schema
 See ```schema/schema.graphql```
@@ -22,7 +22,6 @@ See ```schema/schema.graphql```
 - Error handling: I need to make the frontend_translator correcly handle all errors that come from the GraphQL API. Maybe I should have an error page that it loads.
 - There is no password check at login
 - We do not correctly display 'Incorrect username message' to the user
-- Time and date of payment doesn't display correctly 
 - We should hash the passwords
 - Add typechecks
 
