@@ -37,12 +37,10 @@ See ```schema/schema.graphql```
 - I want to make a distinction between developer error messaging and user messaging. Currently they go through the same channels and display in the same place in the UI.
 
 ## ToDo
-- Show all transactions
 - Add mypy typechecks
 - Back to homepage button (logout)
-- You can pay yourself
-- Only shows money leaving your account
 - Can just type URL to get behind login screen
 - Allow the user to have capital letters in their username
 - Update schema.graphql
+- Clean up front end html files
 

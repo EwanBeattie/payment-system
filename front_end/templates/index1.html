@@ -168,7 +168,7 @@
             {% if usernames %}
                 <ul>
                 {% for username in usernames %}
-                    <li><i class="fa-solid fa-user"></i> {{ username }}</li>
+                    <li><i class="fa-solid fa-user"></i> {{ username|capitalize }}</li>
                 {% endfor %}
                 </ul>
             {% else %}

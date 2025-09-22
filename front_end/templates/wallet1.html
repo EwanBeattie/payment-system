@@ -128,7 +128,7 @@
 </head>
 <body>
     <div class="wallet-container">
-        <h2><i class="fa-solid fa-wallet"></i> {{ username }}'s Wallet</h2>
+        <h2><i class="fa-solid fa-wallet"></i> {{ username|capitalize }}'s Wallet</h2>
         <p style="text-align:center;">Balance: <span id="balance">£{{ balance }}</span></p>
         <h3><i class="fa-solid fa-paper-plane"></i> Make a Payment</h3>
         <form action="{{ url_for('make_payment') }}" method="post">
@@ -150,8 +150,8 @@
         <h3><i class="fa-solid fa-users"></i> All Payees</h3>
         {% if usernames %}
         <ul>
-            {% for username in usernames %}
-            <li><i class="fa-solid fa-user"></i> {{ username }}</li>
+              {% for username in usernames %}
+              <li><i class="fa-solid fa-user"></i> {{ username|capitalize }}</li>
             {% endfor %}
         </ul>
         {% else %}
@@ -159,18 +159,18 @@
         {% endif %}
         <h3><i class="fa-solid fa-money-bill-transfer"></i> Transactions</h3>
         <ul>
-            {% for transaction in transactions %}
-            <li style="display: flex; justify-content: space-between; align-items: center;">
-                <span>
-                <i class="fa-solid fa-arrow-right-arrow-left"></i>
-                {{ transaction.dateTime }}: 
-                {% if transaction.type|lower == 'incoming' %}{{ transaction.payerUsername }}{% else %}{{ transaction.recipientUsername }}{% endif %}
-                </span>
-                <span style="font-weight:700; color:{% if transaction.type|lower == 'incoming' %}#059669{% else %}#dc2626{% endif %}; min-width:60px; text-align:right;">
-                {% if transaction.type|lower == 'incoming' %}+{% else %}-{% endif %}£{{ transaction.amount }}
-                </span>
-            </li>
-            {% endfor %}
+                {% for transaction in transactions %}
+                <li style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                    {{ transaction.dateTime }}: 
+                    {% if transaction.type|lower == 'incoming' %}{{ transaction.payerUsername|capitalize }}{% else %}{{ transaction.recipientUsername|capitalize }}{% endif %}
+                    </span>
+                    <span style="font-weight:700; color:{% if transaction.type|lower == 'incoming' %}#059669{% else %}#dc2626{% endif %}; min-width:60px; text-align:right;">
+                    {% if transaction.type|lower == 'incoming' %}+{% else %}-{% endif %}£{{ transaction.amount }}
+                    </span>
+                </li>
+                {% endfor %}
         </ul>
     </div>
     <script src="scripts/wallet.js"></script>
