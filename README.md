@@ -41,4 +41,8 @@ See ```schema/schema.graphql```
 - We do not correctly display 'Incorrect username' message to the user
 - We should hash the passwords
 - Add mypy typechecks
+- Back to homepage button (logout)
+- You can pay yourself
+- Only shows money leaving your account
+- Can just type URL to get behind login screen
 

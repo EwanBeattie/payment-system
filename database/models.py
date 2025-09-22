@@ -13,12 +13,15 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, create_engine
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
+from dotenv import load_dotenv
 import os
 
-# DATABASE_URL = "postgresql://postgres@localhost:5432/wave"
+load_dotenv()  # reads .env
+db_password = os.getenv("DATABASE_PASSWORD")
 
-db_password = os.getenv('DATABASE_PASSWORD')
 DATABASE_URL = f"postgresql://waveuser:{db_password}@localhost:5432/wave"
+
+# DATABASE_URL = "postgresql://postgres@localhost:5432/wave"
 
 # TODO: Move this to database.py
 # Thie creates the connection to the database
