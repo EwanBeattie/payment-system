@@ -19,9 +19,10 @@ def destroy_all_tables():
 
 # Users
 def create_user(username:str, password:str, session):
+    username = str.lower(username)
     new_user = User(username=username, password=password, balance=DEFAULT_STARTING_BALANCE)
     session.add(new_user)
-    print('User created')
+    return(new_user)
 
 # def get_users(session):
 #     users = session.query(User).all()
@@ -32,11 +33,13 @@ def get_users(session):
         users = session.query(User).all()
         return users
     except Exception as e:
+        # TODO: Correctly display error
         print(f"Error fetching users: {e}")
         return []
 
 # This method can return a null value showing there is no user by that name
 def get_user(username, session):
+    username = str.lower(username)
     user = session.query(User).filter_by(username=username).one_or_none()
     return user
 
@@ -52,11 +55,6 @@ def delete_user_by_id(unique_id, session):
     user = session.query(User).filter_by(id=unique_id).one_or_none()
     session.delete(user)
 
-# Auth
-def verify_password(username, password, session):
-    user = get_user(username, session)
-    return user.password == password
-
 # Transactions
 def create_transaction(amount, dateTime, payer, recipient, session):
     new_transaction = Transaction(amount=amount,
@@ -69,12 +67,15 @@ def create_transaction(amount, dateTime, payer, recipient, session):
 
     return new_transaction
 
+def get_transactions(username, session):
+    user = get_user(username, session)
+    payments_made = session.query(Transaction).filter_by(payer_id=user.id).all()
+    payments_received = session.query(Transaction).filter_by(recipient_id=user.id).all()
+    return {'payments_made': payments_made,
+            'payments_received': payments_received}
+
 def get_transaction(transaction_id, session):
     transaction = session.query(User).filter_by(id=transaction_id).one_or_none()
-
-    if transaction is None:
-        raise ReferenceError(f'{get_transaction.__name__} is returning a null value!')
-
     return transaction
 
 def execute_transaction(payer, recipient, amount):

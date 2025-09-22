@@ -9,36 +9,22 @@ app = Flask(__name__, template_folder="front_end/templates", static_folder="fron
 CORS(app)  # Enable CORS for frontend communication
 
 @app.route('/')
-def home():    
+def home():
+    # TODO: Check we are connected and have the relevant permissions to access the database
     return render_homepage()
 
-@app.route('/login', methods=['POST', 'GET'])
-def login():
+@app.route('/start', methods=['POST', 'GET'])
+def start():
     if request.method == 'POST':
-        username = request.form['name']
-        password = request.form['password']
+        username = str.lower(request.form['name'])
+        password = str.lower(request.form['password'])
         action = request.form['action']
 
         if action == 'login':
-            # TODO: Add password check
-            # TODO: Correctly display 'no user by this name' message
-            result = frontend_translator.attempt_login(username, password)
+            return login(username, password)
         elif action == 'create':
-            user = frontend_translator.get_user(username)
-            if user is None:
-                result = frontend_translator.add_user(username, password)
-            else:
-                return render_homepage(error="User already exists")
-        
-        print(result)
-        if result.errors:
+            return create_account(username, password)
 
-            return 'Did not work' + str(result.errors)
-
-        return redirect(url_for('user_page', username=username))
-
-        # To get all the data
-        # dictio = request.form.to_dict()
     elif request.method == 'GET':
         return render_template("index1.html")
 
@@ -53,45 +39,116 @@ app.add_url_rule(
 # Route to handle payment form submission
 @app.route('/make_payment', methods=['POST'])
 def make_payment():
-    username = request.form['username']
-    recipient = request.form['recipient']
+    username = str.lower(request.form['username'])
+    recipient = str.lower(request.form['recipient'])
     amount = request.form['amount']
 
     amount = float(amount)
    
     result = frontend_translator.request_transaction(amount, username, recipient)
-    if result.errors:
+    if result['errors']:
         # TODO: handle if there is more than one error
-        return render_wallet(username, error=result.errors[0].message)
+        return render_wallet(username, error=result['errors'][0].message)
 
     return redirect(url_for('user_page', username=username))
 
 def render_homepage(error=None):
-    users = frontend_translator.get_users()
+    result = frontend_translator.get_users()
+
+    if result['errors']:
+        users = []
+
+        if error is None:
+            error = result['errors']
+
+    else:
+        users = result['data']
+
     usernames = [user['username'] for user in users]
     return render_template("index1.html", usernames=usernames, error=error)
 
 def render_wallet(username, error=None):
     ## For display purposes
-    users = frontend_translator.get_users()
+    result = frontend_translator.get_users()
+    users = result['data']
+
+    if result['errors']:
+        return render_wallet_with_error(result['errors'][0].message)
+
     usernames = [user['username'] for user in users]
+    usernames.remove(username)
     ##
 
-    user = frontend_translator.get_user(username)
-    transactions = frontend_translator.get_transactions(username)
-    if transactions is not None:
-        payments_made = transactions.data['getUser']['paymentsMade']
-        reverse_order_payments = list(reversed(payments_made))
+    # TODO: Check for errors
+    user = frontend_translator.get_user(username)['data']
     balance = user['balance']
+
+    result = frontend_translator.get_transactions(username)
+    if result['errors']:
+        return render_wallet_with_error(result['errors'])
+    
+    transactions = result['data']
+    
+    if transactions is not None:
+        payments_made = transactions['paymentsMade']
+        for outgoing_payment in payments_made:
+            outgoing_payment.update({'type':'outgoing'})
+
+        payments_received = transactions['paymentsReceived']
+        for incoming_payment in payments_received:
+            incoming_payment.update({'type':'incoming'})
+        
+        all_transactions = payments_made + payments_received
+        all_transactions.sort(key=lambda x: int(x['id']), reverse=True)
+
     return render_template('wallet1.html', 
                            username=username, 
-                           transactions=reverse_order_payments,
+                           transactions=all_transactions,
                            usernames=usernames, 
                            balance=balance, 
                            error=error)
 
+def render_wallet_with_error(error):
+    return render_template('wallet1.html', 
+                        username='null', 
+                        transactions=[],
+                        usernames=[], 
+                        balance='0', 
+                        error=error)
+
+def login(username, password):
+    result = frontend_translator.attempt_login(username, password)
+
+    if result['errors']:
+        return render_homepage(error=result['errors'][0].message)
+    
+    loginSuccess = result['data']
+
+    if not loginSuccess:
+        return render_homepage(error='Incorrect password')
+        
+    return redirect(url_for('user_page', username=username))
+
+def create_account(username, password):
+    result = frontend_translator.get_user(username)
+    user = result['data']
+
+    if result['errors']:
+        return render_homepage(error=result['errors'][0].message)
+    
+    if user is None:
+        result = frontend_translator.add_user(username, password)
+
+        if result['errors']:
+            return render_homepage(error=result['errors'][0].message)
+        
+    else:
+        return render_homepage(error="User already exists")
+    
+    return redirect(url_for('user_page', username=username))    
+
 if __name__ == "__main__":
     database.initialise_tables() 
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    # app.run(host="0.0.0.0", port=5000, debug=True)
 
-    # app.run(debug=True, port=8000)
+    app.run(debug=True)

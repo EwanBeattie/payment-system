@@ -15,7 +15,7 @@ This project is to get hand-on experience with the following tools:
 - Run 'pip install -r requirements'
 - Run app.py -->
 
-## Remote Server
+<!-- ## Remote Server
 - Clone the repo
 - Make sure you have python and pip
     - ```sudo apt update && sudo apt install -y python3 python3-venv python3-pip```
@@ -26,23 +26,23 @@ This project is to get hand-on experience with the following tools:
 ```pip install -r requirements.txt```
 
 - Install postgreSQL
-```sudo apt install -y postgresql```
-
-
+```sudo apt install -y postgresql``` -->
 
 
 
 ## GraphQL Schema
 See ```schema/schema.graphql```
 
+## Desired Improvements
+- I want to make a distinction between developer error messaging and user messaging. Currently they go through the same channels and display in the same place in the UI.
+
 ## ToDo
-- Error handling: I need to make the frontend_translator correcly handle all errors that come from the GraphQL API. Maybe I should have an error page that it loads.
-- There is no password check at login
-- We do not correctly display 'Incorrect username' message to the user
-- We should hash the passwords
+- Show all transactions
 - Add mypy typechecks
 - Back to homepage button (logout)
 - You can pay yourself
 - Only shows money leaving your account
 - Can just type URL to get behind login screen
+- Allow the user to have capital letters in their username
+- Update schema.graphql
 

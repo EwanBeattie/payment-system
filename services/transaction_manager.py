@@ -2,6 +2,9 @@ import datetime
 import database.database as database
 from graphql import GraphQLError
 
+def get_transactions(username, session):
+    return database.get_transactions(username, session)
+
 def request_transaction(amount, payer_username, recipient_username, session):
     payer = database.get_user(payer_username, session)
     recipient = database.get_user(recipient_username, session)
@@ -11,6 +14,8 @@ def request_transaction(amount, payer_username, recipient_username, session):
         raise GraphQLError('Could not find payer in database')
     if recipient is None:
         raise GraphQLError('Could not find recipient in database')
+    if payer == recipient:
+        raise GraphQLError('You cannot pay yourself')
 
     # Raise transaction request
     dateTime = datetime.datetime.now().strftime('%d/%m/%y %H:%M')
@@ -18,21 +23,9 @@ def request_transaction(amount, payer_username, recipient_username, session):
 
     # Check payer has enough money in account
     if payer.balance < amount:
-        # TODO: set transaction to failed
-        raise GraphQLError('Payer does not have enough funds in their account')
+        raise GraphQLError('You do not have enough funds in your account')
 
     # Transfer money
-    # Debug
-    print(f'payer {payer.balance}')
-    print(f'recipient {recipient.balance}')
-
     database.execute_transaction(payer, recipient, amount)
-    # TODO: Set transaction to successful
-
-    # Debug
-    payer = database.get_user(payer_username, session)
-    recipient = database.get_user(recipient_username, session)
-    print(f'payer {payer.balance}')
-    print(f'recipient {recipient.balance}')
 
     return new_transaction

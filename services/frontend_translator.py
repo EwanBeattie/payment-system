@@ -1,5 +1,5 @@
-# Here we simulate the GraphQL requests that come from the frontend.
-import schema.schema
+# Here we translate the requests that come from the frontend into GraphQL format.
+import schema.schema as schema
 
 def attempt_login(username, password):
     mutation = f'''
@@ -12,8 +12,10 @@ def attempt_login(username, password):
     }}
     '''
 
-    result = schema.schema.execute(mutation)
-    return result
+    result = schema.execute(mutation)
+
+    return {'data': result.data['attemptLogin']['loginSuccess'] if not result.errors else None,
+            'errors': result.errors}
 
 def add_user(username, password):
     add_user_mutation = f'''
@@ -28,8 +30,10 @@ def add_user(username, password):
     }}
     '''
 
-    result = schema.schema.execute(add_user_mutation)
-    return result
+    result = schema.execute(add_user_mutation)
+
+    return {'data': result.data['addUser']['user'] if not result.errors else None,
+            'errors': result.errors}
 
 def delete_user(username):
     delete_user_mutation = f'''
@@ -40,8 +44,10 @@ def delete_user(username):
     }}
     '''
 
-    result = schema.schema.execute(delete_user_mutation)
-    return result
+    result = schema.execute(delete_user_mutation)
+
+    return {'data': result.data['deleteUser']['isDeleted'] if not result.errors else None,
+            'errors': result.errors}
 
 def get_users():
     get_users = '''
@@ -54,13 +60,10 @@ def get_users():
       }
     }
     '''
-    result = schema.schema.execute(get_users)
-    if result.errors:
-        print(f"Errors: {result.errors}")
-        return None
-    else:
-        data = result.data['getUsers']
-        return data
+    result = schema.execute(get_users)
+
+    return {'data': result.data['getUsers'] if not result.errors else None,
+            'errors': result.errors}
 
 def get_user(username):
     get_user = f'''
@@ -72,13 +75,10 @@ def get_user(username):
       }}
     }}
     '''
-    result = schema.schema.execute(get_user)
-    if result.errors:
-        print(f"No user found with username: {username}\nErrors: {result.errors}")
-        return None
-    else:
-        data = result.data['getUser']
-        return data
+    result = schema.execute(get_user)
+
+    return {'data': result.data['getUser'] if not result.errors else None,
+            'errors': result.errors}
 
 def get_transactions(username):
     get_transactions = f'''
@@ -101,8 +101,10 @@ def get_transactions(username):
       }}
     }}
     '''
-    result = schema.schema.execute(get_transactions)
-    return result
+    result = schema.execute(get_transactions)
+
+    return {'data': result.data['getUser'] if not result.errors else None,
+            'errors': result.errors}
 
 def request_transaction(amount, payer_username, recipient_username):
     request_transaction = f'''
@@ -119,12 +121,8 @@ def request_transaction(amount, payer_username, recipient_username):
       }}
     }}
     '''
-    # result = schema.schema.execute(request_transaction)
-    # if result.errors:
-    #     print(f"Errors: {result.errors}")
-    #     return result
-    # else:
-    #     data = result.data['requestTransaction']
-    #     return data
-    result = schema.schema.execute(request_transaction)
-    return result
+
+    result = schema.execute(request_transaction)
+    
+    return {'data': result.data['requestTransaction'] if not result.errors else None,
+            'errors': result.errors}

@@ -10,16 +10,23 @@ import services.auth
 from database.models import User, Transaction, engine
 from services import transaction_manager, user_manager
 
-# DATABASE_URL = "postgresql://postgres:rootpassword@localhost:5432/postgres"
 DEFAULT_STARTING_BALANCE = 1000.0
 
-# engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(bind=engine)
+SessionLocal = sessionmaker(bind=engine, autoflush=True)
 
 # Types
 class UserType(SQLAlchemyObjectType):
     class Meta:
         model = User
+
+    payments_made = graphene.List(lambda: TransactionType)
+    payments_received = graphene.List(lambda: TransactionType)
+
+    def resolve_payments_made(parent, info):
+        return parent.payments_made
+
+    def resolve_payments_received(parent, info):
+        return parent.payments_received
 
 class TransactionType(SQLAlchemyObjectType):
     class Meta:
@@ -31,6 +38,7 @@ class TransactionType(SQLAlchemyObjectType):
 class Query(graphene.ObjectType):
     get_user = graphene.Field(UserType, username=graphene.String())
     get_users = graphene.List(UserType)
+    get_transactions = graphene.List(UserType, username=graphene.String())
 
     def resolve_get_user(self, info, username):
         session = info.context.get('session')
@@ -41,6 +49,11 @@ class Query(graphene.ObjectType):
         session = info.context.get('session')
         users = user_manager.get_users(session)
         return users
+    
+    # def resolve_get_transactions(self, info, username):
+    #     session = info.context.get('session')
+    #     transactions = transaction_manager.get_transactions(username, session)
+    #     return transactions
 
 
 
@@ -90,7 +103,8 @@ class AttemptLogin(graphene.Mutation):
 
     def mutate(self, info, username, password):
         session = info.context.get('session')
-        return services.auth.attempt_login(username, password, session)
+        success = services.auth.attempt_login(username, password, session)
+        return AttemptLogin(login_success=success)
 
 class ExampleMutation(graphene.Mutation):
     # You place whatever arguments are required to carry out the mutation here
@@ -130,6 +144,7 @@ def execute_with_variable(mutation, variables):
 def execute(mutation, variables = None):
     # Make a new session per mutation
     session = SessionLocal()
+
     try:
         # Include session in context. We need to pass it along to the database
         context = {'session': session}

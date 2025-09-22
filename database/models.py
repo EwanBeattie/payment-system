@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()  # reads .env
-db_password = os.getenv("DATABASE_PASSWORD")
+db_password = os.getenv("DATABASE/_PASSWORD")
 
 DATABASE_URL = f"postgresql://waveuser:{db_password}@localhost:5432/wave"
 

@@ -160,13 +160,16 @@
         <h3><i class="fa-solid fa-money-bill-transfer"></i> Transactions</h3>
         <ul>
             {% for transaction in transactions %}
-                <li style="display: flex; justify-content: space-between; align-items: center;">
-                    <span>
-                        <i class="fa-solid fa-arrow-right-arrow-left"></i>
-                        {{ transaction.dateTime }}: {{ transaction.recipientUsername }}
-                    </span>
-                    <span style="font-weight:700; color:#059669; min-width:60px; text-align:right;">£{{ transaction.amount }}</span>
-                </li>
+            <li style="display: flex; justify-content: space-between; align-items: center;">
+                <span>
+                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                {{ transaction.dateTime }}: 
+                {% if transaction.type|lower == 'incoming' %}{{ transaction.payerUsername }}{% else %}{{ transaction.recipientUsername }}{% endif %}
+                </span>
+                <span style="font-weight:700; color:{% if transaction.type|lower == 'incoming' %}#059669{% else %}#dc2626{% endif %}; min-width:60px; text-align:right;">
+                {% if transaction.type|lower == 'incoming' %}+{% else %}-{% endif %}£{{ transaction.amount }}
+                </span>
+            </li>
             {% endfor %}
         </ul>
     </div>

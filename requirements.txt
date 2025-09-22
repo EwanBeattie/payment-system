@@ -17,3 +17,6 @@ mypy
 
 # Server
 gunicorn
+
+# Auth
+passlib[argon2]
