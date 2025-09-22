@@ -13,12 +13,22 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, create_engine
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
+import os
 
-DATABASE_URL = "postgresql://postgres@localhost:5432/wave"
+# DATABASE_URL = "postgresql://postgres@localhost:5432/wave"
 
-# TODO: Move thiis to database.py
+db_password = os.getenv('DATABASE_PASSWORD')
+DATABASE_URL = f"postgresql://waveuser:{db_password}@localhost:5432/wave"
+
+# TODO: Move this to database.py
 # Thie creates the connection to the database
 engine = create_engine(DATABASE_URL)
+
+try:
+    with engine.connect() as conn:
+        print("Connection successful!")
+except Exception as e:
+    print(f"Connection failed: {e}")
 
 # declarative_base() is a SQLAlchemy factory function that creates a base class for all your ORM models.
 Base = declarative_base()

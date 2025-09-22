@@ -92,4 +92,6 @@ def render_wallet(username, error=None):
 
 if __name__ == "__main__":
     database.initialise_tables() 
-    app.run(debug=True)
+    # app.run(host="0.0.0.0", port=5000, debug=True)
+
+    app.run(debug=True, port=8000)

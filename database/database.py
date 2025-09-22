@@ -23,9 +23,17 @@ def create_user(username:str, password:str, session):
     session.add(new_user)
     print('User created')
 
+# def get_users(session):
+#     users = session.query(User).all()
+#     return users
+
 def get_users(session):
-    users = session.query(User).all()
-    return users
+    try:
+        users = session.query(User).all()
+        return users
+    except Exception as e:
+        print(f"Error fetching users: {e}")
+        return []
 
 # This method can return a null value showing there is no user by that name
 def get_user(username, session):
