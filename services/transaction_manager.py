@@ -9,7 +9,6 @@ def request_transaction(amount, payer_username, recipient_username, session):
     payer = database.get_user(payer_username, session)
     recipient = database.get_user(recipient_username, session)
 
-    # TODO: Can this error be moved into the schema class
     if payer is None:
         raise GraphQLError('Could not find payer in database')
     if recipient is None:

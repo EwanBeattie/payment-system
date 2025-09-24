@@ -25,7 +25,7 @@ def start():
             return create_account(username, password)
 
     elif request.method == 'GET':
-        return render_template("index1.html")
+        return render_homepage()
 
 @app.route('/user/<username>')
 def user_page(username):
@@ -63,7 +63,7 @@ def render_homepage(error=None):
         users = result['data']
 
     usernames = [user['username'] for user in users]
-    return render_template("index1.html", usernames=usernames, error=error)
+    return render_template("index.html", usernames=usernames, error=error)
 
 def render_wallet(username, error=None):
     result = frontend_translator.get_users()
@@ -97,7 +97,7 @@ def render_wallet(username, error=None):
         all_transactions = payments_made + payments_received
         all_transactions.sort(key=lambda x: int(x['id']), reverse=True)
 
-    return render_template('wallet1.html', 
+    return render_template('wallet.html', 
                            username=username, 
                            transactions=all_transactions,
                            usernames=usernames, 
@@ -105,7 +105,7 @@ def render_wallet(username, error=None):
                            error=error)
 
 def render_wallet_with_error(error):
-    return render_template('wallet1.html', 
+    return render_template('wallet.html', 
                         username='null', 
                         transactions=[],
                         usernames=[], 

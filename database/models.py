@@ -16,41 +16,21 @@ from sqlalchemy.ext.declarative import declarative_base
 from dotenv import load_dotenv
 import os
 
-load_dotenv()  # reads .env
+load_dotenv()
 db_password = os.getenv("DATABASE_PASSWORD")
 
 DATABASE_URL = f"postgresql://waveuser:{db_password}@localhost:5432/wave"
 
+# For local testing
 # DATABASE_URL = "postgresql://postgres@localhost:5432/wave"
 
 # TODO: Move this to database.py
-# Thie creates the connection to the database
+# This creates the connection to the database
 engine = create_engine(DATABASE_URL)
 
-try:
-    with engine.connect() as conn:
-        print("Connection successful!")
-except Exception as e:
-    print(f"Connection failed: {e}")
-
 # declarative_base() is a SQLAlchemy factory function that creates a base class for all your ORM models.
+# The Base object contains a metadata attribute that tracks all your tables: Base.metadata
 Base = declarative_base()
-# Base.metadata
-# The Base object contains a metadata attribute that tracks all your tables:
-# # This creates all tables in your database
-# Base.metadata.create_all(engine)
-# # This drops all tables
-# Base.metadata.drop_all(engine)
-
-# TODO: Add this
-# class TransactionStatus(enum.Enum):
-#     PENDING = "pending"
-#     COMPLETED = "completed"
-#     FAILED = "failed"
-#     REFUNDED = "refunded"
-#     CANCELLED = "cancelled"
-
-#     status = Column(enum.Enum(TransactionStatus), nullable=False)
 
 class Transaction(Base):
     __tablename__ = 'transactions'

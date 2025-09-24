@@ -49,11 +49,6 @@ class Query(graphene.ObjectType):
         session = info.context.get('session')
         users = user_manager.get_users(session)
         return users
-    
-    # def resolve_get_transactions(self, info, username):
-    #     session = info.context.get('session')
-    #     transactions = transaction_manager.get_transactions(username, session)
-    #     return transactions
 
 
 
@@ -106,6 +101,7 @@ class AttemptLogin(graphene.Mutation):
         success = services.auth.attempt_login(username, password, session)
         return AttemptLogin(login_success=success)
 
+# This is an example to help demonstarte what each section does.
 class ExampleMutation(graphene.Mutation):
     # You place whatever arguments are required to carry out the mutation here
     class Arguments:

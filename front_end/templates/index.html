@@ -2,29 +2,178 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Wave Payment System</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(120deg, #f8fafc 0%, #e0e7ef 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        h1 {
+            font-size: 2.2rem;
+            color: #2563eb;
+            margin-top: 32px;
+            margin-bottom: 0;
+            text-align: center;
+            letter-spacing: 1px;
+            font-weight: 900;
+            font-family: 'Roboto', sans-serif;
+        }
+        .container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 40px 32px 32px 32px;
+            max-width: 400px;
+            width: 100%;
+            margin: 32px 0;
+            position: relative;
+        }
+        .form-section {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: flex-start;
+        }
+        .form-fields {
+            min-width: 220px;
+            margin-left: auto;
+        }
+        .gap-section {
+            height: 18px;
+        }
+        h2 {
+            color: #2d3748;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        ul {
+            padding: 0;
+            margin: 0 0 24px 0;
+            list-style: none;
+        }
+        ul li {
+            background: #f1f5f9;
+            margin-bottom: 8px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            color: #374151;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        ul li i {
+            margin-right: 8px;
+            color: #60a5fa;
+        }
+        .error {
+            color: #e53e3e;
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        label {
+            font-weight: 700;
+            color: #4b5563;
+            margin-bottom: 4px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+        input[type="text"]:focus {
+            border: 1.5px solid #60a5fa;
+        }
+        .button-group {
+            display: flex;
+            gap: 12px;
+        }
+        button {
+            flex: 1;
+            padding: 10px 0;
+            background: linear-gradient(90deg, #60a5fa 0%, #2563eb 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #2563eb 0%, #60a5fa 100%);
+        }
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .form-row label {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        .form-row input[type="text"] {
+            flex: 1.2;
+            margin-left: 12px;
+        }
+        @media (max-width: 500px) {
+            .container {
+                padding: 24px 8px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Current Users</h2>
-    {% if usernames %}
-        <ul>
-        {% for username in usernames %}
-            <li>{{ username }}</li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No users found.</p>
-    {% endif %}
-    {% if error %}
-        <div style="color: red; margin-bottom: 10px;">{{ error }}</div>
-    {% endif %}
-    <form action="{{ url_for('login') }}" method="post">
-        <label>Name</label>
-        <input type="text" placeholder="name", name="name">
-        <label>Password</label>
-        <input type="text" placeholder="password", name="password">
-        <button type="submit" name="action" value="login">Login</button>
-        <button type="submit" name="action" value="create">Create User</button>
-    </form>
-</body>
+        <h1 style="font-size:2.2rem; color:#2563eb; margin-top:32px; margin-bottom:0; text-align:center; letter-spacing:1px; font-weight:900; font-family:'Roboto',sans-serif;">Payment System</h1>
+        <div class="container">
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+            <form action="{{ url_for('start') }}" method="post">
+                <div class="form-row">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name">
+                </div>
+                <div class="form-row">
+                    <label for="password">Password</label>
+                    <input type="text" id="password" name="password" placeholder="Enter your password">
+                </div>
+                <div class="button-group">
+                    <button type="submit" name="action" value="login">Login</button>
+                    <button type="submit" name="action" value="create">Create User</button>
+                </div>
+            </form>
+            <div class="gap-section"></div>
+            <h2><i class="fa-solid fa-users"></i> Current Users</h2>
+            {% if usernames %}
+                <ul>
+                {% for username in usernames %}
+                    <li><i class="fa-solid fa-user"></i> {{ username|capitalize }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p style="text-align:center; color:#64748b;">No users found.</p>
+            {% endif %}
+        </div>
+    </body>
 </html>

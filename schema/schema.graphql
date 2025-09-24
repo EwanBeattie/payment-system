@@ -25,6 +25,7 @@ type Transaction {
 type Query {
     getUser(username: String!): User
     getUsers: [User!]
+    getTransactions(username: String!): [Transaction!]
 }
 
 type Mutation {
@@ -32,4 +33,6 @@ type Mutation {
     deleteUser(username: String!): Boolean
     requestTransaction(amount: Float!, payerUsername: String!, recipientUsername: String!): Transaction
     attemptLogin(username: String!, password: String!): Boolean
+    exampleMutation(exampleArg: String!, anotherArg: Int): Boolean
 }
+

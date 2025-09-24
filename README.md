@@ -135,21 +135,20 @@ To use Gunicorn to keep the server running the flask app as a systemd service we
 
 
 ## Desired Improvements
-- I want to make a distinction between developer error messaging and user messaging. Currently they go through the same channels and display in the same place in the UI.
-- When paying someone, I want to select their user tile, not have to type the name.
+- I want to make a distinction between developer error messaging and user messaging. Currently they go through the same channels and display in the same place in the UI
+- When paying someone, I want to select their user tile, not have to type the name
+- Create a 'Back To Homepage' or 'Logout' button
+- Everytime we access the frontend_translator we have to check if the API came back with errors. We could automate this (see app.py)
 
 ## ToDo
-- Add description to the home page
 - Add mypy typechecks
-- Comment code
-- Back to homepage button (logout)
-- Can just type URL to get behind login screen
-- Update schema.graphql
-- Clean up front end html files
-- Everytime we access the frontend_translator we have to check if the API came back with errors. We could automate this (see app.py)
-- We only ever display the first error, this seems fine for this application for now
+- Comment code and clean up
 
 ## Bugs
-I acknowledge these but have no plans to fix them
-- No restrictions on usernames (e.g. can be blank or spaces)
+- No restrictions on usernames (e.g. can be blank or spaces). Blank username breaks webpage
+- Can type URL to get behind login screen & into someone's account
+- We only ever display the first GraphQL error, this seems fine for this application for now
+- You can pay yourself by making a payment with a negative number
+
+
 
