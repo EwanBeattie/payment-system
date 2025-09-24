@@ -10,7 +10,6 @@ CORS(app)  # Enable CORS for frontend communication
 
 @app.route('/')
 def home():
-    # TODO: Check we are connected and have the relevant permissions to access the database
     return render_homepage()
 
 @app.route('/start', methods=['POST', 'GET'])
@@ -47,7 +46,6 @@ def make_payment():
    
     result = frontend_translator.request_transaction(amount, username, recipient)
     if result['errors']:
-        # TODO: handle if there is more than one error
         return render_wallet(username, error=result['errors'][0].message)
 
     return redirect(url_for('user_page', username=username))
@@ -68,7 +66,6 @@ def render_homepage(error=None):
     return render_template("index1.html", usernames=usernames, error=error)
 
 def render_wallet(username, error=None):
-    ## For display purposes
     result = frontend_translator.get_users()
     users = result['data']
 
@@ -77,7 +74,6 @@ def render_wallet(username, error=None):
 
     usernames = [user['username'] for user in users]
     usernames.remove(username)
-    ##
 
     # TODO: Check for errors
     user = frontend_translator.get_user(username)['data']
@@ -131,14 +127,13 @@ def login(username, password):
 
 def create_account(username, password):
     result = frontend_translator.get_user(username)
-    user = result['data']
 
     if result['errors']:
         return render_homepage(error=result['errors'][0].message)
+    user = result['data']
     
     if user is None:
         result = frontend_translator.add_user(username, password)
-
         if result['errors']:
             return render_homepage(error=result['errors'][0].message)
         
