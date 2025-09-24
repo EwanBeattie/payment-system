@@ -96,9 +96,6 @@ Host <server_name>
 
 - Make your postgreSQL account and update the code with the relevant credentials
 
-- Finish these!!!!!!!!!!!!!!!!!!!!!!!
-
-
 ### Gunicorn Setup
 Gunicorn allows us to keep the server running our app after we close the shell and logout.
 - Add a service file to ```/etc/systemd/system/payment-system.service```
