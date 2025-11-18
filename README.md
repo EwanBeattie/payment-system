@@ -1,11 +1,11 @@
-# Wave Payment System
+# Payment System
 
 Currently hosted on: http://94.130.78.58:5000/
 
 ## Project Overview
 Hello,
 
-Welcome to my simple payment system. I built this to strengthen my application to Wave and have used the following technologies:
+Welcome to my simple payment system. I built this to gain a better understanding of the following technologies:
 
 - **Backend & API**: Python, GraphQL, Graphene, Flask, SQLAlchemy
 - **Database**: PostgreSQL
