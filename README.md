@@ -1,6 +1,7 @@
 # Payment System
 
-Currently hosted on: http://94.130.78.58:5000/
+Can be hosted upon request
+~~Currently hosted on: http://94.130.78.58:5000/~~
 
 ## Project Overview
 Hello,
